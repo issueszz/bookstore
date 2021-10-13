@@ -1,0 +1,36 @@
+syntax = "v1"
+
+info(
+	title: // TODO: add title
+	desc: // TODO: add description
+	author: "issueszz"
+	email: "issueszz@outlook.com"
+)
+
+type (
+	addReq {
+		Book  string `form:"book"`
+		Price int64  `form:"price"`
+	}
+	addResp {
+		Ok bool `json:"ok"`
+	}
+)
+
+type (
+	checkReq {
+		Book string `form:"book"`
+	}
+	checkResp {
+		Found bool  `json:"found"`
+		Price int64 `json:"price"`
+	}
+)
+
+service bookstore-api {
+	@handler addHandler // TODO: set handler name and delete this comment
+	get /add (addReq) returns(addResp)
+	
+	@handler checkHandler // TODO: set handler name and delete this comment
+	get /check (checkReq) returns(checkResp)
+}
