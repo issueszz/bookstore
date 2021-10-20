@@ -22,7 +22,7 @@ func main() {
 	var c config.Config
 	conf.MustLoad(*configFile, &c)
 	ctx := svc.NewServiceContext(c)
-	srv := server.NewAddServer(ctx)
+	srv := server.NewAdderServer(ctx)
 
 	s := zrpc.MustNewServer(c.RpcServerConf, func(grpcServer *grpc.Server) {
 		add.RegisterAdderServer(grpcServer, srv)

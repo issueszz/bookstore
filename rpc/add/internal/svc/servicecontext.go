@@ -3,17 +3,29 @@ package svc
 import (
 	"bookstore/rpc/add/internal/config"
 	"bookstore/rpc/model"
-	"github.com/tal-tech/go-zero/core/stores/sqlx"
+	"gorm.io/driver/mysql"
+	"gorm.io/gorm"
 )
 
 type ServiceContext struct {
 	Config config.Config
-	Model model.BookModel
+	Db *gorm.DB
 }
 
 func NewServiceContext(c config.Config) *ServiceContext {
+	dsn := "root:root123@tcp(127.0.0.1:3306)/gozero?charset=utf8mb4&parseTime=True&loc=Local"
+	db, err := gorm.Open(mysql.New(mysql.Config{
+		DSN: dsn,
+	}))
+
+	if err != nil {
+		panic(err)
+	}
+
+	db.AutoMigrate(&model.BookStore{})
+
 	return &ServiceContext{
 		Config: c,
-		Model: model.NewBookModel(sqlx.NewMysql(c.DataSource), c.Cache),
+		Db: db,
 	}
 }
